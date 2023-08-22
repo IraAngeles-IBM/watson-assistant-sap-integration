@@ -1,0 +1,412 @@
+{
+  "intents": [
+    {
+      "intent": "getmaterialsdata",
+      "examples": [
+        {
+          "text": "get materials information"
+        },
+        {
+          "text": "i want to get material information"
+        },
+        {
+          "text": "I want to get the materials data"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "thankyou",
+      "examples": [
+        {
+          "text": "bye"
+        },
+        {
+          "text": "false you"
+        },
+        {
+          "text": "thank you"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "anything_else",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "NO",
+          "synonyms": [
+            "no"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "YES",
+          "synonyms": [
+            "yes"
+          ]
+        }
+      ],
+      "fuzzy_match": false
+    },
+    {
+      "entity": "materials_name",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "BATTERY_01",
+          "synonyms": [
+            "battery",
+            "BATTERY_01"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "CH_C_104",
+          "synonyms": [
+            "CH_C_104"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "CH_C_106",
+          "synonyms": [
+            "CH_C_106"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "CH_C_107",
+          "synonyms": [
+            "CH_C_107"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "FG3000001",
+          "synonyms": [
+            "FG3000001"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "X-RAY_MACHINE",
+          "synonyms": [
+            "x ray machine",
+            "X-RAY machine",
+            "X-RAY_MACHINE"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "webhooks": [
+    {
+      "url": "https://au-syd.functions.appdomain.cloud/api/v1/web/273d1e6e-0b43-4275-bda6-142e72b17bfd/default/sg-sap-ibm-s20.json",
+      "name": "main_webhook",
+      "headers": []
+    }
+  ],
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Get Materials",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Please enter the material name"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#getmaterialsdata",
+      "dialog_node": "Anything else",
+      "previous_sibling": "Welcome",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_9_1691994206819",
+      "disabled": true,
+      "event_name": "focus",
+      "dialog_node": "handler_1_1692178667929"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_3_1692178668246",
+      "context": {
+        "materials_name": "@materials_name"
+      },
+      "conditions": "@materials_name",
+      "event_name": "input",
+      "dialog_node": "handler_2_1692178668259"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_10_1692673351761",
+      "event_name": "input",
+      "dialog_node": "handler_4_1692673351773"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": ""
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_3_1692178668246",
+      "event_name": "focus",
+      "dialog_node": "handler_6_1692178668259",
+      "previous_sibling": "handler_2_1692178668259"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_10_1692673351761",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1692673351773",
+      "previous_sibling": "handler_4_1692673351773"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Do you want to get information for another Material?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "title": "Select",
+            "options": [
+              {
+                "label": "Yes",
+                "value": {
+                  "input": {
+                    "text": "Get Materials"
+                  }
+                }
+              },
+              {
+                "label": "No",
+                "value": {
+                  "input": {
+                    "text": "Thank you"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "Anything else",
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "conditions": "$webhook_result_1",
+      "dialog_node": "node_10_1692671130024",
+      "previous_sibling": "node_9_1691994206819"
+    },
+    {
+      "type": "standard",
+      "title": "Thank you ",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Thank you and have a good day!"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#thankyou",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_4_1692680973455",
+      "previous_sibling": "Anything else"
+    },
+    {
+      "type": "frame",
+      "title": "get_materials_sap",
+      "parent": "Anything else",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "material": "$materials_name"
+          },
+          "result_variable": "webhook_result_1"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_10_1692671130024"
+      },
+      "conditions": "@materials_name",
+      "dialog_node": "node_9_1691994206819"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Plant: $webhook_result_1.Plant"
+              },
+              {
+                "text": "Storage Location: $webhook_result_1.StorageLocation"
+              },
+              {
+                "text": "Material: $webhook_result_1.Material"
+              },
+              {
+                "text": "Inventory Stock Type: $webhook_result_1.InventoryStockType"
+              },
+              {
+                "text": "Material Base Unit: $webhook_result_1.MaterialBaseUnit"
+              },
+              {
+                "text": "Stock Quantity: $webhook_result_1.MatlWrhsStkQtyInMatlBaseUnit"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "multiline"
+          }
+        ]
+      },
+      "parent": "node_9_1691994206819",
+      "conditions": "$webhook_result_1",
+      "dialog_node": "response_2_1691994372479",
+      "previous_sibling": "slot_3_1692178668246"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Anything else I can help you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "title": "continue",
+            "options": [
+              {
+                "label": "Yes",
+                "value": {
+                  "input": {
+                    "text": "True"
+                  }
+                }
+              },
+              {
+                "label": "No",
+                "value": {
+                  "input": {
+                    "text": "False"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_10_1692671130024",
+      "disabled": true,
+      "dialog_node": "response_8_1692673057207",
+      "previous_sibling": "slot_10_1692673351761"
+    },
+    {
+      "type": "slot",
+      "parent": "node_10_1692671130024",
+      "dialog_node": "slot_10_1692673351761"
+    },
+    {
+      "type": "slot",
+      "parent": "node_9_1691994206819",
+      "variable": "$materials_name",
+      "dialog_node": "slot_3_1692178668246",
+      "previous_sibling": "handler_1_1692178667929"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello. How can I help you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "counterexamples": [
+    {
+      "text": "I want to get materials information"
+    },
+    {
+      "text": "YES"
+    }
+  ],
+  "learning_opt_out": false,
+  "language": "en",
+  "description": "created for assistant 47652165-ecaa-4d67-a220-6e103496391f",
+  "name": "SAP Demo-dialog"
+}
